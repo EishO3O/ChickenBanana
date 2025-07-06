@@ -3,17 +3,21 @@ body {
   font-family: sans-serif;
   background: #fbecc9;
   text-align: center;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .container {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center; /* vertical center */
-  align-items: center;     /* horizontal center */
+  justify-content: center; 
+  align-items: center;     
   padding: 2rem;
   box-sizing: border-box;
+
 }
 
 .grid {
@@ -27,12 +31,21 @@ body {
 .tile {
   width: 80px;
   height: 80px;
-  background: #ddd;
-  border: 2px solid #444;
+  background: #fffbe6;
+  border: 2px solid #bfa14a;
+  border-radius: 8px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.tile:hover {
+  box-shadow: 0 0 16px 4px #ffe066, 0 2px 6px rgba(0,0,0,0.07);
+  border-color: #ffe066;
+  z-index: 1;
 }
 
 img {
@@ -56,4 +69,56 @@ h1, h2, h3 {
   text-align: center;
   margin-left: auto;
   margin-right: auto;
+}
+
+.tile-number {
+  display: block;
+  background: #fffbe6;
+  padding: 4px 12px;
+  margin: 0 auto 6px auto;
+  font-weight: bold;
+  font-size: 1.1em;
+  width: fit-content;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+  position: relative;
+  z-index: 2;
+}
+
+.clicked-tiles-tab {
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  background: #fffbe6;
+  border: 2px solid #bfa14a;
+  border-radius: 12px;
+  padding: 10px 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  font-size: 1.1em;
+  z-index: 10;
+  margin-bottom: 0; /* Remove margin-bottom since it's now positioned */
+  display: inline-block;
+}
+
+.clicked-tiles-list {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.clicked-tile-number {
+  background: #ffe066;
+  color: #333;
+  border: 1.5px solid #bfa14a;
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-weight: bold;
+  min-width: 28px;
+  text-align: center;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.clicked-tile-number:hover {
+  background: #ffe066;
+  box-shadow: 0 0 8px 2px rgba(255, 224, 102, 0.5);
 }

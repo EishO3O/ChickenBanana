@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 
 const gridSize = 6;
@@ -17,6 +17,21 @@ function App() {
   const [score, setScore] = useState(0);
   const [message, setMessage] = useState('');
   const [gameOver, setGameOver] = useState(false);
+  const [revealed, setRevealed] = useState([]); // NEW
+
+  useEffect(() => {
+    if (gameOver) {
+      // Start by revealing only the clicked tiles
+      setRevealed([...clicked]);
+      // After a short delay, reveal all tiles
+      const timeout = setTimeout(() => {
+        setRevealed(board.map((_, idx) => idx));
+      }, 600); // 600ms delay before revealing all
+      return () => clearTimeout(timeout);
+    } else {
+      setRevealed([]); // Reset on restart
+    }
+  }, [gameOver, clicked, board]);
 
   const handleTileClick = (index) => {
     if (gameOver || clicked.includes(index) || !playerType) return;
@@ -45,6 +60,7 @@ function App() {
     setMessage('');
     setGameOver(false);
     setPlayerType(null);
+    setRevealed([]);
   };
 
   return (
@@ -60,11 +76,13 @@ function App() {
       <div className="grid">
         {board.map((item, i) => (
           <div key={i} className="tile" onClick={() => handleTileClick(i)}>
-            <span className="tile-number">{i + 1}</span>
-            {clicked.includes(i) && item === 'banana' && (
+            {!clicked.includes(i) && !gameOver && (
+              <span className="tile-number">{i + 1}</span>
+            )}
+            {(clicked.includes(i) || (gameOver && revealed.includes(i))) && item === 'banana' && (
               <img src="/banana.png" alt="banana" className="image" />
             )}
-            {clicked.includes(i) && item === 'chicken' && (
+            {(clicked.includes(i) || (gameOver && revealed.includes(i))) && item === 'chicken' && (
               <img src="/chicken.png" alt="chicken" className="image" />
             )}
           </div>
@@ -75,6 +93,16 @@ function App() {
         <button className="restart" onClick={restartGame}>
           🔁 Restart
         </button>
+      )}
+      {clicked.length > 0 && (
+        <div className="clicked-tiles-tab">
+          <strong>Clicked Tiles:</strong>
+          <div className="clicked-tiles-list">
+            {clicked.map(i => (
+              <span key={i} className="clicked-tile-number">{i + 1}</span>
+            ))}
+          </div>
+        </div>
       )}
     </div>
   );
